@@ -2,11 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"time"
-
-	"gopkg.in/yaml.v2"
 )
 
 // Global variables.
@@ -32,27 +29,6 @@ type Conf struct {
 			Name string
 		}
 	}
-}
-
-// Read the config file and parse the yaml.
-func readConf(filename string) (*Conf, error) {
-	buf, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	c := &Conf{}
-	err = yaml.Unmarshal(buf, c)
-	if err != nil {
-		return nil, fmt.Errorf("in file %q: %v", filename, err)
-	}
-
-	return c, nil
-}
-
-func setConf(c *Conf) {
-	logfile = c.Publish.Log.Filename
-	frequency, _ = time.ParseDuration(c.HealthCheck.Frequency)
 }
 
 // Main
