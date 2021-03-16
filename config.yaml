@@ -1,0 +1,11 @@
+healthcheck:   # What to check
+  server: x.y.com
+  port: 80
+  ignoreCert: true
+  frequency: 60s
+publish:
+  cloudwatch:
+    name: thing
+  log:
+    filename: out.log
+
