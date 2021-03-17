@@ -15,14 +15,25 @@ func checkSite(url string) (bool, error) {
 		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr, Timeout: t}
-	resp, err := client.Get(url)
-	if err != nil {
-		return false, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode == 200 {
-		return true, nil
-	} else {
-		return false, err
+
+	ticker := time.NewTicker(frequency)
+	// Loop
+	for {
+		// Wait for the ticker to fire.
+		<-ticker.C
+		// Make the request.
+		resp, err := client.Get(url)
+		if err != nil {
+			results <- false
+		}
+		resp.Body.Close()
+
+		// Only if the status is 200, success.
+		// TODO:  Change to accept more status codes.
+		if resp.StatusCode == 200 {
+			results <- true
+		} else {
+			results <- false
+		}
 	}
 }

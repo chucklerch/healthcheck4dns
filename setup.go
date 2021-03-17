@@ -23,8 +23,8 @@ type Conf struct {
 		Frequency  string
 	}
 	Publish struct {
-		Log struct {
-			Filename string
+		File struct {
+			Name string
 		}
 		Cloudwatch struct {
 			Name string
@@ -50,7 +50,7 @@ func readConf(filename string) (*Conf, error) {
 
 func setConf(c *Conf) {
 	url = "http://" + c.HealthCheck.Server + ":" + strconv.Itoa(c.HealthCheck.Port) + c.HealthCheck.Path
-	//logfile = c.Publish.Log.Filename
+	//outputfile = c.Publish.File.Name
 	frequency, _ = time.ParseDuration(c.HealthCheck.Frequency)
 	if debug {
 		log.Printf("URL: %s\n", url)

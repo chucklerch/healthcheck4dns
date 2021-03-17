@@ -15,6 +15,7 @@ var (
 	frequency  time.Duration
 	configFile string
 )
+var results = make(chan bool)
 
 // Main
 func main() {
@@ -39,12 +40,19 @@ func main() {
 		setConf(conf)
 	}
 
-	// Get the results of a healthcheck
-	results, err := checkSite(url)
-	if err != nil {
-		log.Fatalf("Error: %s", err)
-	}
-	if results {
-		log.Println("Success.")
+	// Start thread.
+	log.Println("Starting checkSite thread.")
+	go checkSite(url)
+
+	// Loop of Infinity.
+	for {
+		// Wait for results to return.
+		healthy, ok := <-results
+		if !ok && !healthy {
+			log.Println("Health check failure.")
+		}
+		if healthy {
+			log.Println("Health check success.")
+		}
 	}
 }

@@ -7,6 +7,6 @@ healthcheck:   # What to check
 publish:
   cloudwatch:
     name: thing
-  log:
-    filename: out.log
+  file:
+    name: out.log
 
