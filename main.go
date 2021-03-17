@@ -1,50 +1,50 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 )
 
+//
+const Version = "v0.0.1"
+
 // Global variables.
 var (
-	url          = "http://google.com/"
-	frequency, _ = time.ParseDuration("60s")
-	logfile      = "out.log"
+	debug      bool
+	url        string
+	frequency  time.Duration
+	configFile string
 )
-
-// Config file structure.
-type Conf struct {
-	HealthCheck struct {
-		Server     string
-		Port       int
-		IgnoreCert bool
-		Frequency  string
-	}
-	Publish struct {
-		Log struct {
-			Filename string
-		}
-		Cloudwatch struct {
-			Name string
-		}
-	}
-}
 
 // Main
 func main() {
-	conf, err := readConf("config.yaml")
-	if err != nil {
-		log.Fatalf("Error: %s", err)
+	// Startup.
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	log.Printf("Sarting version %s.\n", Version)
+
+	// Parse command line.
+	parseCmdline()
+
+	// Read the config file.
+	if configFile != "" {
+		conf, err := readConf(configFile)
+		if err != nil {
+			log.Fatalf("Error: %s", err)
+		}
+		// Dump the config contents.
+		if debug {
+			log.Printf("Dump: %+v\n", conf)
+		}
+		// Set variables according to the config file.
+		setConf(conf)
 	}
-	fmt.Printf("Dump: %+v\n", conf)
-	setConf(conf)
+
+	// Get the results of a healthcheck
 	results, err := checkSite(url)
 	if err != nil {
 		log.Fatalf("Error: %s", err)
 	}
 	if results {
-		fmt.Println("Request good.")
+		log.Println("Success.")
 	}
-
 }

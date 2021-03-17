@@ -6,10 +6,31 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
+	"strconv"
 	"time"
 
 	"gopkg.in/yaml.v2"
 )
+
+// Config file structure.
+type Conf struct {
+	HealthCheck struct {
+		Server     string
+		Port       int
+		Path       string
+		IgnoreCert bool
+		Frequency  string
+	}
+	Publish struct {
+		Log struct {
+			Filename string
+		}
+		Cloudwatch struct {
+			Name string
+		}
+	}
+}
 
 // Read the config file and parse the yaml.
 func readConf(filename string) (*Conf, error) {
@@ -28,6 +49,12 @@ func readConf(filename string) (*Conf, error) {
 }
 
 func setConf(c *Conf) {
-	logfile = c.Publish.Log.Filename
+	url = "http://" + c.HealthCheck.Server + ":" + strconv.Itoa(c.HealthCheck.Port) + c.HealthCheck.Path
+	//logfile = c.Publish.Log.Filename
 	frequency, _ = time.ParseDuration(c.HealthCheck.Frequency)
+	if debug {
+		log.Printf("URL: %s\n", url)
+		log.Printf("FREQ: %s\n", frequency.String())
+		log.Printf("IGNORE CERT: %t\n", c.HealthCheck.IgnoreCert)
+	}
 }
