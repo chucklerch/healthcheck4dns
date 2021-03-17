@@ -1,6 +1,7 @@
 healthcheck:   # What to check
-  server: x.y.com
+  server: www.google.com
   port: 80
+  path: /
   ignoreCert: true
   frequency: 60s
 publish:
