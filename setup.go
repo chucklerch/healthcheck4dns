@@ -1,7 +1,7 @@
 package main
 
 // Setup the program's configuration, from the config file
-//  and evironment and store the results in global variables.
+//  and evironment, and store the results in global variables.
 
 import (
 	"fmt"

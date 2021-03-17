@@ -30,6 +30,5 @@ func parseCmdline() {
 	if *configArg != "" {
 		configFile = *configArg
 		log.Printf("Using config file %s\n", configFile)
-
 	}
 }

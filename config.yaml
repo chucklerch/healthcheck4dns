@@ -9,4 +9,3 @@ publish:
     name: thing
   file:
     name: out.log
-

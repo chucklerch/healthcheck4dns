@@ -40,7 +40,7 @@ func main() {
 		setConf(conf)
 	}
 
-	// Start thread.
+	// Start the health checking thread.
 	log.Println("Starting checkSite thread.")
 	go checkSite(url)
 
