@@ -4,9 +4,6 @@ on:
   push:
     branches:
     - master
-  create:
-    tags:
-    - "v*"  # trigger on a new version tag
 
 jobs:
   build:
