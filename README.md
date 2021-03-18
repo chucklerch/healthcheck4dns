@@ -1,4 +1,4 @@
-# Healthcheck4dns
+# Healthcheck4DNS
 A tool to perform a healthcheck on a service and report results. 
 Intended to be used by Route 53 to determine availability.
 
